@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:mvvm_app_using_providers/home_screen.dart';
+import 'package:provider/provider.dart';
+
+import 'package:mvvm_app_using_providers/users_list/views/home_screen.dart';
+import 'package:mvvm_app_using_providers/users_list/view_models/users_view_model.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(create: (context) => UsersViewModel()),
+  ], child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {

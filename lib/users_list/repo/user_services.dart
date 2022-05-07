@@ -1,23 +1,36 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:mvvm_app_using_providers/users_list/models/users_list_model.dart';
+import 'package:mvvm_app_using_providers/users_list/repo/api_status.dart';
 import 'package:mvvm_app_using_providers/utils/constants.dart';
-
-import 'api_status.dart';
 
 class UserServices {
   static Future<Object> getUsers() async {
     try {
       final url = Uri.parse(userListUrl);
+      debugPrint('Request url: ${url.toString()}');
+
       final response = await http.get(url);
+      debugPrint('Response status code: ${response.statusCode.toString()}');
+
       if (response.statusCode == 200) {
-        return Success(
-            code: 200, response: usersListModelFromJson(response.body));
+        return Success(code: 200, data: usersListModelFromJson(response.body));
       }
-      return Failure(code: 100, errorResponse: 'Invalid response');
-      throw HttpException('Loading error ${response.statusCode}');
+      debugPrint('Error: Invalid Response');
+      return Failure(code: userInvalidResponse, errorMessage: 'Invalid Response');
+    } on SocketException catch (e) {
+      debugPrint('Error: ${e.message}');
+      return Failure(code: noInternet, errorMessage: 'No Internet');
+    } on HttpException catch (e) {
+      debugPrint('Error: ${e.message}');
+      return Failure(code: noServiceFound, errorMessage: 'No Service Found');
+    } on FormatException catch (e) {
+      debugPrint('Error: ${e.message}');
+      return Failure(code: invalidFormat, errorMessage: 'Invalid Format');
     } on Exception catch (e) {
-      throw const HttpException('Loading data error');
+      debugPrint('Error: ${e.toString()}');
+      return Failure(code: unknownError, errorMessage: 'Unknown Error');
     }
   }
 }

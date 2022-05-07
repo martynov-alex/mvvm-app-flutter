@@ -1,11 +1,11 @@
 class Success {
   int code;
-  Object response;
-  Success({required this.code, required this.response});
+  Object data;
+  Success({required this.code, required this.data});
 }
 
 class Failure {
   int code;
-  Object errorResponse;
-  Failure({required this.code, required this.errorResponse});
+  String errorMessage;
+  Failure({required this.code, required this.errorMessage});
 }
