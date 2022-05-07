@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:mvvm_app_using_providers/utils/navigation_utils.dart';
 import 'package:mvvm_app_using_providers/users_list/view_models/users_view_model.dart';
+import 'package:mvvm_app_using_providers/utils/navigation_utils.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,6 +12,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('List of users (MVVM Example)'),
         centerTitle: true,
+        backgroundColor: Colors.black54,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.read<UsersViewModel>().getUsers(),

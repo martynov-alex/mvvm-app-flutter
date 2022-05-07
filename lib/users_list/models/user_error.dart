@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-UserError userErrorFromJson(String str) => UserError.fromJson(json.decode(str) as Map<String, dynamic>);
-String userErrorToJson(UserError data) => json.encode(data.toJson());
+UserError userErrorFromJson(String str) => UserError.fromJson(jsonDecode(str) as Map<String, dynamic>);
+String userErrorToJson(UserError data) => jsonEncode(data.toJson());
 
 class UserError {
   int code;

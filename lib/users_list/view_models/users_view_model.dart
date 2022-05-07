@@ -9,11 +9,11 @@ import 'package:mvvm_app_using_providers/users_list/repo/user_services.dart';
 class UsersViewModel extends ChangeNotifier {
   /// Getters
   bool get loading => _loading;
-  UnmodifiableListView<UsersListModel> get usersList => UnmodifiableListView(_usersList);
+  UnmodifiableListView<UserModel> get usersList => UnmodifiableListView(_usersList);
   UserError? get userError => _userError;
 
   bool _loading = false;
-  Iterable<UsersListModel> _usersList = [];
+  Iterable<UserModel> _usersList = [];
   UserError? _userError;
 
   /// Setters
@@ -24,7 +24,7 @@ class UsersViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setUsersList(Iterable<UsersListModel> usersList) {
+  void setUsersList(Iterable<UserModel> usersList) {
     _usersList = usersList;
   }
 
@@ -45,7 +45,7 @@ class UsersViewModel extends ChangeNotifier {
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (response is Success) {
-      setUsersList(response.data as List<UsersListModel>);
+      setUsersList(response.data as List<UserModel>);
     }
     if (response is Failure) {
       final userError = UserError(code: response.code, message: response.errorMessage);

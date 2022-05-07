@@ -13,6 +13,7 @@ class UserServices {
 
       final response = await http.get(url);
       debugPrint('Response status code: ${response.statusCode.toString()}');
+      // debugPrint('Response body: ${response.body.toString()}');
 
       if (response.statusCode == 200) {
         return Success(code: 200, data: usersListModelFromJson(response.body));
