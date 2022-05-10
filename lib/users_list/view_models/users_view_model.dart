@@ -1,5 +1,4 @@
 import 'dart:collection';
-
 import 'package:flutter/material.dart';
 import 'package:mvvm_app_using_providers/users_list/models/user_error.dart';
 import 'package:mvvm_app_using_providers/users_list/models/users_list_model.dart';
@@ -10,47 +9,51 @@ class UsersViewModel extends ChangeNotifier {
   /// Getters
   bool get loading => _loading;
   UnmodifiableListView<UserModel> get usersList => UnmodifiableListView(_usersList);
+  UserModel get selectedUser => _selectedUser;
   UserError? get userError => _userError;
 
   bool _loading = false;
   Iterable<UserModel> _usersList = [];
+  late UserModel _selectedUser;
   UserError? _userError;
 
   /// Setters
-  ///
-  /// We call [notifyListeners] only in [startLoading] method for optimization.
-  void startLoading(bool loading) {
-    _loading = loading;
+  void setSelectedUser(UserModel selectedUser) {
+    _selectedUser = selectedUser;
     notifyListeners();
   }
 
-  void setUsersList(Iterable<UserModel> usersList) {
-    _usersList = usersList;
+  void startStopLoading() {
+    _loading = !_loading;
+    notifyListeners();
   }
 
-  void setUserError(UserError userError) {
-    _userError = userError;
-  }
-
-  void setUserErrorToNull() {
-    _userError = null;
-  }
+  // TODO(martynov): Или лучше сделать отдельные методы: startLoading и stopLoading?
+  // void startLoading() {
+  //   _loading = true;
+  //   notifyListeners();
+  // }
+  //
+  // void stopLoading() {
+  //   _loading = false;
+  //   notifyListeners();
+  // }
 
   /// The [getUsers] method
   Future<void> getUsers() async {
-    setUserErrorToNull();
+    _userError = null;
+    _usersList = [];
 
-    startLoading(true);
+    startStopLoading();
     final response = await UserServices.getUsers();
     await Future<void>.delayed(const Duration(seconds: 1));
 
     if (response is Success) {
-      setUsersList(response.data as List<UserModel>);
+      _usersList = response.usersList as List<UserModel>;
     }
     if (response is Failure) {
-      final userError = UserError(code: response.code, message: response.errorMessage);
-      setUserError(userError);
+      _userError = UserError(code: response.code, message: response.errorMessage);
     }
-    startLoading(false);
+    startStopLoading();
   }
 }

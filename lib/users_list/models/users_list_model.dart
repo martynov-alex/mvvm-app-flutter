@@ -1,14 +1,25 @@
 import 'dart:convert';
 
-//List<Welcome> welcomeFromJson(String str) => List<Welcome>.from(json.decode(str).map((x) => Welcome.fromJson(x)));
+// List<UserModel> usersListModelFromJson(String str) =>
+//     List<UserModel>.from((jsonDecode(str) as List<dynamic>).map<UserModel>((x) => UserModel.fromJson(x)));
 
-List<UserModel> usersListModelFromJson(String str) {
-  final jsonData = jsonDecode(str) as List<Map<String, dynamic>>;
-  return List<UserModel>.from(jsonData.map<UserModel>(UserModel.fromJson));
+// List<UserModel> usersListModelFromJson(String str) =>
+//     List<UserModel>.from((jsonDecode(str) as List<dynamic>).map<UserModel>((x as Map<String, dynamic>) => UserModel.fromJson(x)));
+
+// TODO(martynov): Вопрос по кастингу
+
+List<UserModel> usersListFromJson(String str) {
+  final userList = <UserModel>[];
+  final jsonData = jsonDecode(str) as List<dynamic>;
+
+  for (final user in jsonData) {
+    userList.add(UserModel.fromJson(user as Map<String, dynamic>));
   }
+  return userList;
+}
 
-String usersListModelToJson(List<UserModel> data) {
- return jsonEncode(List<dynamic>.from(data.map<Map<String, dynamic>>((x) => x.toJson())));
+String usersListToJson(List<UserModel> data) {
+  return jsonEncode(List<dynamic>.from(data.map<Map<String, dynamic>>((x) => x.toJson())));
 }
 
 class UserModel {
@@ -32,8 +43,7 @@ class UserModel {
     required this.company,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) =>
-      UserModel(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json['id'] as int,
         name: json['name'] as String,
         username: json['username'] as String,
@@ -44,8 +54,7 @@ class UserModel {
         company: Company.fromJson(json['company'] as Map<String, dynamic>),
       );
 
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'id': id,
         'name': name,
         'username': username,
@@ -72,8 +81,7 @@ class Address {
     required this.geo,
   });
 
-  factory Address.fromJson(Map<String, dynamic> json) =>
-      Address(
+  factory Address.fromJson(Map<String, dynamic> json) => Address(
         street: json['street'] as String,
         suite: json['suite'] as String,
         city: json['city'] as String,
@@ -81,8 +89,7 @@ class Address {
         geo: Geo.fromJson(json['geo'] as Map<String, dynamic>),
       );
 
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'street': street,
         'suite': suite,
         'city': city,
@@ -100,14 +107,12 @@ class Geo {
     required this.lng,
   });
 
-  factory Geo.fromJson(Map<String, dynamic> json) =>
-      Geo(
+  factory Geo.fromJson(Map<String, dynamic> json) => Geo(
         lat: json['lat'] as String,
         lng: json['lng'] as String,
       );
 
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'lat': lat,
         'lng': lng,
       };
@@ -124,15 +129,13 @@ class Company {
     required this.bs,
   });
 
-  factory Company.fromJson(Map<String, dynamic> json) =>
-      Company(
+  factory Company.fromJson(Map<String, dynamic> json) => Company(
         name: json['name'] as String,
         catchPhrase: json['catchPhrase'] as String,
         bs: json['bs'] as String,
       );
 
-  Map<String, dynamic> toJson() =>
-      <String, dynamic>{
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'name': name,
         'catchPhrase': catchPhrase,
         'bs': bs,

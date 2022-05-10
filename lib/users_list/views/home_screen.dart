@@ -29,21 +29,24 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(8),
                 shrinkWrap: true,
                 itemCount: data.usersList.length,
-                itemBuilder: (BuildContext context, int index) {
+                itemBuilder: (context, index) {
                   return ListTile(
                     leading: CircleAvatar(
                       child: Text('${data.usersList.elementAt(index).id}'),
+                      backgroundColor: Colors.tealAccent,
                     ),
                     title: Text(data.usersList.elementAt(index).name),
                     subtitle: Text(data.usersList.elementAt(index).email),
                     trailing: IconButton(
-                      onPressed: () => openUserDetails(context),
+                      onPressed: () {
+                        data.setSelectedUser(data.usersList.elementAt(index));
+                        openUserDetails(context);
+                      },
                       icon: const Icon(Icons.more_vert),
                     ),
-                    //isThreeLine: true,
                   );
                 },
-                separatorBuilder: (BuildContext context, int index) => const Divider(thickness: 1),
+                separatorBuilder: (context, index) => const Divider(thickness: 1),
               );
             }
             if (data.userError != null) {

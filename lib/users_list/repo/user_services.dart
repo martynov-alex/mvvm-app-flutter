@@ -5,6 +5,7 @@ import 'package:mvvm_app_using_providers/users_list/models/users_list_model.dart
 import 'package:mvvm_app_using_providers/users_list/repo/api_status.dart';
 import 'package:mvvm_app_using_providers/utils/constants.dart';
 
+// TODO(martynov): Работа с API, обработка исключчений
 class UserServices {
   static Future<Object> getUsers() async {
     try {
@@ -13,10 +14,10 @@ class UserServices {
 
       final response = await http.get(url);
       debugPrint('Response status code: ${response.statusCode.toString()}');
-      // debugPrint('Response body: ${response.body.toString()}');
 
       if (response.statusCode == 200) {
-        return Success(code: 200, data: usersListModelFromJson(response.body));
+        final usersList = usersListFromJson(response.body);
+        return Success(code: 200, usersList: usersList);
       }
       debugPrint('Error: Invalid Response');
       return Failure(code: userInvalidResponse, errorMessage: 'Invalid Response');

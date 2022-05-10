@@ -1,7 +1,7 @@
 class Success {
   int code;
-  Object data;
-  Success({required this.code, required this.data});
+  Object usersList;
+  Success({required this.code, required this.usersList});
 }
 
 class Failure {
