@@ -15,7 +15,7 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.black54,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.read<UsersViewModel>().getUsers(),
+        onPressed: () => context.read<UsersViewModel>().fetchUsers(),
         child: const Icon(Icons.supervised_user_circle_sharp, size: 40),
       ),
       body: Center(
@@ -30,19 +30,18 @@ class HomeScreen extends StatelessWidget {
                 shrinkWrap: true,
                 itemCount: data.usersList.length,
                 itemBuilder: (context, index) {
-                  return ListTile(
-                    leading: CircleAvatar(
-                      child: Text('${data.usersList.elementAt(index).id}'),
-                      backgroundColor: Colors.tealAccent,
-                    ),
-                    title: Text(data.usersList.elementAt(index).name),
-                    subtitle: Text(data.usersList.elementAt(index).email),
-                    trailing: IconButton(
-                      onPressed: () {
-                        data.setSelectedUser(data.usersList.elementAt(index));
-                        openUserDetails(context);
-                      },
-                      icon: const Icon(Icons.more_vert),
+                  return GestureDetector(
+                    onTap: () {
+                      data.setSelectedUser(data.usersList.elementAt(index));
+                      openUserDetails(context);
+                    },
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        child: Text('${data.usersList.elementAt(index).id}'),
+                        backgroundColor: Colors.tealAccent,
+                      ),
+                      title: Text(data.usersList.elementAt(index).name),
+                      subtitle: Text(data.usersList.elementAt(index).email),
                     ),
                   );
                 },

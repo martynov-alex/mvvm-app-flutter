@@ -1,13 +1,5 @@
 import 'dart:convert';
 
-// List<UserModel> usersListModelFromJson(String str) =>
-//     List<UserModel>.from((jsonDecode(str) as List<dynamic>).map<UserModel>((x) => UserModel.fromJson(x)));
-
-// List<UserModel> usersListModelFromJson(String str) =>
-//     List<UserModel>.from((jsonDecode(str) as List<dynamic>).map<UserModel>((x as Map<String, dynamic>) => UserModel.fromJson(x)));
-
-// TODO(martynov): Вопрос по кастингу
-
 List<UserModel> usersListFromJson(String str) {
   final userList = <UserModel>[];
   final jsonData = jsonDecode(str) as List<dynamic>;
@@ -17,6 +9,12 @@ List<UserModel> usersListFromJson(String str) {
   }
   return userList;
 }
+
+// List<UserModel> usersListFromJson(String str) {
+//   final jsonData = jsonDecode(str) as List<dynamic>;
+//   final userList = List<UserModel>.from(jsonData.map<UserModel>((user as Map<String, dynamic>) => UserModel.fromJson(user)));
+//   return userList;
+// }
 
 String usersListToJson(List<UserModel> data) {
   return jsonEncode(List<dynamic>.from(data.map<Map<String, dynamic>>((x) => x.toJson())));
